@@ -12,7 +12,7 @@ object JointspaceDevice : ConfigSpec("jointspace") {
 
 object MultiCast : ConfigSpec("multicast") {
 
-    val groupAddress by optional("237.36.35.34", description = "Multicast group address to forward Ambilight data to.")
+    val groupAddress by optional("239.255.31.32", description = "Multicast group address to forward Ambilight data to.")
     val port by optional(41414, description = "Multicast client port.")
 }
 

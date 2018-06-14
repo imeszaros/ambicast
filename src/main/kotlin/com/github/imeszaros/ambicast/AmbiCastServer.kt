@@ -23,10 +23,12 @@ class AmbiCastServer(
     private val multicastThread = MulticastThread()
 
     init {
+        LOG.info("Multicasting is configured to group {} and port {}.", multicastGroup, multicastPort)
+
         NetworkInterface.getNetworkInterfaces().asSequence()
-                .filter { !it.isLoopback && it.isUp && it.supportsMulticast() }
+                .filter { !it.isLoopback && it.isUp && it.supportsMulticast() && it.inetAddresses.hasMoreElements() }
                 .onEach { LOG.info("Discovered multicast capable interface: {}", it.displayName) }
-                .map { MulticastSocket().apply { this.networkInterface = it } }
+                .map { MulticastSocket().apply { this.timeToLive = 16; this.networkInterface = it } }
                 .map { SenderThread(it).apply { this.start() } }
                 .toCollection(senderThreads)
 
